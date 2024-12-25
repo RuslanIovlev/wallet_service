@@ -45,7 +45,7 @@ public class WalletServiceImpl implements WalletService {
     @Override
     public String getBalance(UUID walletId) {
         Wallet wallet = findWalletById(walletId);
-        log.info("Successfully found wallet balance for wallet id: {}", wallet.getWalletId());
+        log.debug("Balance by walletId: {}", wallet.getBalance());
         return String.format("Current balance: %s", wallet.getBalance().toString());
     }
 
@@ -63,8 +63,9 @@ public class WalletServiceImpl implements WalletService {
     private Wallet findWalletById(UUID walletId) {
         return walletRepository.findById(walletId)
                 .orElseThrow(() -> {
-                    log.error("Wallet not found");
-                    return new WalletNotFoundException("Wallet not found");
+                    String errorMessage = String.format("Wallet with ID %s not found", walletId);
+                    log.error(errorMessage);
+                    return new WalletNotFoundException(errorMessage);
                 });
     }
 }

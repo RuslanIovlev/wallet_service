@@ -21,6 +21,6 @@ public class Wallet {
     @UuidGenerator
     private UUID walletId;
 
-    @Column(name = "balance")
+    @Column(name = "balance", precision = 10, scale = 2)
     private BigDecimal balance;
 }

@@ -2,6 +2,7 @@ package com.example.wallet_service.controller;
 
 import com.example.wallet_service.dto.OperationDto;
 import com.example.wallet_service.service.WalletService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,7 +18,7 @@ public class WalletController {
     private final WalletService walletService;
 
     @PostMapping("/wallet")
-    public String createWalletOperation(@RequestBody OperationDto operationDto) {
+    public String createWalletOperation(@RequestBody @Valid OperationDto operationDto) {
         return walletService.createWalletOperation(operationDto);
     }
 
