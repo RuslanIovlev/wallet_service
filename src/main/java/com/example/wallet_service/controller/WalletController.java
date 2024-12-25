@@ -18,8 +18,8 @@ public class WalletController {
     private final WalletService walletService;
 
     @PostMapping("/wallet")
-    public String createWalletOperation(@RequestBody @Valid OperationDto operationDto) {
-        return walletService.createWalletOperation(operationDto);
+    public String changeBalance(@RequestBody @Valid OperationDto operationDto) {
+        return walletService.changeBalance(operationDto);
     }
 
     @GetMapping("/wallets/{WALLET_UUID}")

@@ -6,8 +6,11 @@ import com.example.wallet_service.exception.WalletNotFoundException;
 import com.example.wallet_service.model.Wallet;
 import com.example.wallet_service.repository.WalletRepository;
 import com.example.wallet_service.service.WalletService;
+import jakarta.persistence.OptimisticLockException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.retry.annotation.Backoff;
+import org.springframework.retry.annotation.Retryable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,7 +26,10 @@ public class WalletServiceImpl implements WalletService {
 
     @Override
     @Transactional
-    public String createWalletOperation(OperationDto operationDto) {
+    @Retryable(retryFor = OptimisticLockException.class,
+            maxAttemptsExpression = "${retryable.max-attempts}",
+            backoff = @Backoff(delayExpression = "${retryable.delay}"))
+    public String changeBalance(OperationDto operationDto) {
         log.info("Starting to create wallet operation: {}", operationDto);
         Wallet wallet = findWalletById(operationDto.wallet_id());
         log.info("Found wallet with id: {}", wallet.getWalletId());

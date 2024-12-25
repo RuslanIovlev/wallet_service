@@ -6,7 +6,7 @@ import java.util.UUID;
 
 public interface WalletService {
 
-    String createWalletOperation(OperationDto operationDto);
+    String changeBalance(OperationDto operationDto);
 
     String getBalance(UUID walletId);
 }

@@ -1,4 +1,5 @@
 CREATE TABLE wallets(
     wallet_id UUID PRIMARY KEY,
-    balance decimal(10,2)
+    balance numeric(10,2),
+    version bigint DEFAULT 0
 );

@@ -53,13 +53,13 @@ public class WalletServiceTest {
     }
 
     @Test
-    public void when_createWalletOperationWithTypeDeposit_then_returnSuccess() {
+    public void when_changeBalanceWithTypeDeposit_then_returnSuccess() {
         wallet = Wallet.builder()
                 .walletId(walletId)
                 .balance(BigDecimal.ZERO)
                 .build();
         when(walletRepository.findById(walletId)).thenReturn(Optional.of(wallet));
-        String result = walletService.createWalletOperation(deposit);
+        String result = walletService.changeBalance(deposit);
 
         assertEquals("The operation is done. Current balance: 100", result);
         assertEquals(BigDecimal.valueOf(100), wallet.getBalance());
@@ -67,13 +67,13 @@ public class WalletServiceTest {
     }
 
     @Test
-    public void when_createWalletOperationWithTypeWithdraw_then_returnSuccess() {
+    public void when_changeBalanceWithTypeWithdraw_then_returnSuccess() {
         wallet = Wallet.builder()
                 .walletId(walletId)
                 .balance(BigDecimal.valueOf(100L))
                 .build();
         when(walletRepository.findById(walletId)).thenReturn(Optional.of(wallet));
-        String result = walletService.createWalletOperation(withdraw);
+        String result = walletService.changeBalance(withdraw);
 
         assertEquals("The operation is done. Current balance: 0", result);
         assertEquals(BigDecimal.valueOf(0), wallet.getBalance());
@@ -81,7 +81,7 @@ public class WalletServiceTest {
     }
 
     @Test
-    public void when_createWalletOperationWithTypeWithdraw_then_returnEnoughFunds() {
+    public void when_changeBalanceWithTypeWithdraw_then_returnEnoughFunds() {
         wallet = Wallet.builder()
                 .walletId(walletId)
                 .balance(BigDecimal.ZERO)
@@ -89,19 +89,19 @@ public class WalletServiceTest {
         when(walletRepository.findById(walletId)).thenReturn(Optional.of(wallet));
 
         Exception exception = assertThrows(NotEnoughFundsException.class, () ->
-                walletService.createWalletOperation(withdraw));
+                walletService.changeBalance(withdraw));
 
         assertEquals("Not enough funds on the wallet", exception.getMessage());
     }
 
     @Test
-    public void when_createWalletOperation_then_returnWalletNotFound() {
+    public void when_changeBalance_then_returnWalletNotFound() {
         when(walletRepository.findById(walletId)).thenReturn(Optional.empty());
 
         Exception exception = assertThrows(WalletNotFoundException.class, () ->
-                walletService.createWalletOperation(deposit));
+                walletService.changeBalance(deposit));
 
-        assertEquals("Wallet not found", exception.getMessage());
+        assertEquals("Wallet with ID 123e4567-e89b-12d3-a456-426614174000 not found", exception.getMessage());
     }
 
     @Test
@@ -123,6 +123,6 @@ public class WalletServiceTest {
         Exception exception = assertThrows(WalletNotFoundException.class, () ->
                 walletService.getBalance(walletId));
 
-        assertEquals("Wallet not found", exception.getMessage());
+        assertEquals("Wallet with ID 123e4567-e89b-12d3-a456-426614174000 not found", exception.getMessage());
     }
 }

@@ -4,6 +4,8 @@ spring:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
     password: password
+    hikari:
+      connection-init-sql: CREATE SCHEMA IF NOT EXISTS wallet_schema
 
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -13,9 +15,11 @@ spring:
     properties:
       hibernate:
         format_sql: true
+        default_schema: wallet_schema
 
   liquibase:
     change-log: classpath:db/changelog/db.changelog-master.yaml
+    default-schema: wallet_schema
 
 logging:
   level:
@@ -23,3 +27,7 @@ logging:
 
 server:
   port: 8080
+
+retryable:
+  max-attempts: 5
+  delay: 5000

@@ -23,4 +23,8 @@ public class Wallet {
 
     @Column(name = "balance", precision = 10, scale = 2)
     private BigDecimal balance;
+
+    @Version
+    @Column(name = "version")
+    private Long version;
 }

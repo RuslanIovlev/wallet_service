@@ -49,10 +49,10 @@ public class WalletControllerTest {
     }
 
     @Test
-    public void when_createWalletOperation_thenReturnSuccess() throws Exception {
+    public void when_changeBalance_thenReturnSuccess() throws Exception {
         String expectedResponse = "The operation is done. Current balance: 100";
 
-        when(walletService.createWalletOperation(any(OperationDto.class))).thenReturn(expectedResponse);
+        when(walletService.changeBalance(any(OperationDto.class))).thenReturn(expectedResponse);
         mockMvc.perform(post("/api/v1/wallet")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(new ObjectMapper().writeValueAsString(operationDto)))
